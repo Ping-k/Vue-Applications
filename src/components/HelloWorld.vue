@@ -80,6 +80,8 @@
         </a>
       </li>
     </ul>
+
+    <button @click="$router.push({name:'ECharts'})">ECharts</button>
   </div>
 </template>
 
