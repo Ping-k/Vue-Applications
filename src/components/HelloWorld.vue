@@ -82,6 +82,7 @@
     </ul>
 
     <button @click="$router.push({name:'ECharts'})">ECharts</button>
+    <button @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</button>
   </div>
 </template>
 
