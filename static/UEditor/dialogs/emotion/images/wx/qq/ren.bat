@@ -1,0 +1,1 @@
+for %%i in (*.gif)  do ren "%%i" wx_"%%i"

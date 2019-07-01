@@ -509,7 +509,8 @@ UE.I18N['zh-cn'] = {
             'lang_input_lvdouwa':'绿豆蛙',
             'lang_input_babyCat':'baby猫',
             'lang_input_bubble':'泡泡',
-            'lang_input_youa':'有啊'
+            'lang_input_youa':'有啊',
+            'lang_input_wx':'表情'
         }
     },
     'gmap':{

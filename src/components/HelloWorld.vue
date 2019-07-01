@@ -83,6 +83,7 @@
 
     <button @click="$router.push({name:'ECharts'})">ECharts</button>
     <button @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</button>
+    <button @click="$router.push({name:'BaiduUEditorWeChatEmoji'})">BaiduUEditorWeChatEmoji</button>
   </div>
 </template>
 

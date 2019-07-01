@@ -21,7 +21,14 @@ function initImgName() {
         for ( var i = 1; i <= tempName[1]; i++ ) {
             tempStr = tempName[0];
             if ( i < 10 ) tempStr = tempStr + '0';
-            tempStr = tempStr + i + '.gif';
+
+            if(tempName[0]==='wx_'){
+              // 微信使用图片
+              tempStr = tempStr + i + '.png';
+            }else{
+              tempStr = tempStr + i + '.gif';
+            }
+
             tempBox.push( tempStr );
         }
     }
@@ -49,7 +56,15 @@ function InsertSmiley( url, evt ) {
         src:editor.options.emotionLocalization ? editor.options.UEDITOR_HOME_URL + "dialogs/emotion/" + url : url
     };
     obj._src = obj.src;
-    editor.execCommand( 'insertimage', obj );
+
+    // 微信显示表情大小
+    if(url.indexOf('/wx/')>=0){
+      let imgSrc = editor.options.UEDITOR_HOME_URL + "dialogs/emotion/images" + url.substr(url.indexOf('/wx/'));
+      editor.execCommand('inserthtml', `<img src="${imgSrc}" _src="${imgSrc}" width="24" height="24" style="vertical-align: middle;">`);
+    }else{
+      editor.execCommand( 'insertimage', obj );
+    }
+
     if ( !evt.ctrlKey ) {
         dialog.popup.hide();
     }
@@ -108,6 +123,10 @@ function autoHeight( index ) {
             iframe.style.height = "230px";
             parent.style.height = "242px";
             break;
+        case 7:
+            iframe.style.height = "230px";
+            parent.style.height = "242px";
+            break;
         default:
 
     }
@@ -156,9 +175,12 @@ function createTab( tabName ) {
 
 function over( td, srcPath, posFlag ) {
     td.style.backgroundColor = "#ACCD3C";
-    $G( 'faceReview' ).style.backgroundImage = "url(" + srcPath + ")";
-    if ( posFlag == 1 ) $G( "tabIconReview" ).className = "show";
-    $G( "tabIconReview" ).style.display = 'block';
+    // 微信公众号表情不预览
+    if(editor.pageType!=='weChatPublic'){
+      $G( 'faceReview' ).style.backgroundImage = "url(" + srcPath + ")";
+      if ( posFlag == 1 ) $G( "tabIconReview" ).className = "show";
+      $G( "tabIconReview" ).style.display = 'block';
+    }
 }
 
 function out( td ) {
