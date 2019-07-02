@@ -4,6 +4,7 @@
     <p class="link-btns">
       <a href="https://ueditor.baidu.com/website/onlinedemo.html" target="_blank">官网实例</a>
       <a href="https://ueditor.baidu.com/doc/" target="_blank">官网API文档</a>
+      <a href="/static/UEditor/index.html">官网实例</a>
 
       <a href="https://github.com/HaoChuan9421/vue-ueditor-wrap" target="_blank">GitHub</a>
       <a href="https://github.com/HaoChuan9421/vue-ueditor-wrap-demo" target="_blank">Vue-Demo</a>
