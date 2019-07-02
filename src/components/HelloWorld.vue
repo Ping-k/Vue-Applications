@@ -81,6 +81,7 @@
       </li>
     </ul>
 
+    <hr>
     <el-button type="primary" @click="$router.push({name:'ECharts'})">ECharts</el-button>
     <el-button type="primary" @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</el-button>
     <el-button type="primary" @click="$router.push({name:'BaiduUEditorWeChatEmoji'})">
@@ -89,6 +90,11 @@
     <el-button type="primary" @click="$router.push({name:'QuillEditor'})">QuillEditor</el-button>
     <el-button type="primary" @click="$router.push({name:'WangEditor'})">WangEditor</el-button>
     <el-button type="primary" @click="$router.push({name:'Sortablejs'})">Sortablejs</el-button>
+    <br>
+
+    <p>
+      <a href="/static/weChatVideoAutoplay.html">微信H5视频自动播放</a>
+    </p>
   </div>
 </template>
 
