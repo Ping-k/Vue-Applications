@@ -81,9 +81,14 @@
       </li>
     </ul>
 
-    <button @click="$router.push({name:'ECharts'})">ECharts</button>
-    <button @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</button>
-    <button @click="$router.push({name:'BaiduUEditorWeChatEmoji'})">BaiduUEditorWeChatEmoji</button>
+    <el-button type="primary" @click="$router.push({name:'ECharts'})">ECharts</el-button>
+    <el-button type="primary" @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</el-button>
+    <el-button type="primary" @click="$router.push({name:'BaiduUEditorWeChatEmoji'})">
+      BaiduUEditorWeChatEmoji
+    </el-button>
+    <el-button type="primary" @click="$router.push({name:'QuillEditor'})">QuillEditor</el-button>
+    <el-button type="primary" @click="$router.push({name:'WangEditor'})">WangEditor</el-button>
+    <el-button type="primary" @click="$router.push({name:'Sortablejs'})">Sortablejs</el-button>
   </div>
 </template>
 
