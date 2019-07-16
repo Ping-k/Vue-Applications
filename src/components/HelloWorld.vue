@@ -82,18 +82,27 @@
     </ul>
 
     <hr>
-    <el-button type="primary" @click="$router.push({name:'ECharts'})">ECharts</el-button>
-    <el-button type="primary" @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</el-button>
-    <el-button type="primary" @click="$router.push({name:'BaiduUEditorWeChatEmoji'})">
-      BaiduUEditorWeChatEmoji
-    </el-button>
-    <el-button type="primary" @click="$router.push({name:'QuillEditor'})">QuillEditor</el-button>
-    <el-button type="primary" @click="$router.push({name:'WangEditor'})">WangEditor</el-button>
-    <el-button type="primary" @click="$router.push({name:'Sortablejs'})">Sortablejs</el-button>
-    <br>
+
+    <p>
+      <el-button type="primary" @click="$router.push({name:'ECharts'})">ECharts</el-button>
+      <el-button type="primary" @click="$router.push({name:'BaiduUEditor'})">BaiduUEditor</el-button>
+      <el-button type="primary" @click="$router.push({name:'BaiduUEditorWeChatEmoji'})">
+        BaiduUEditorWeChatEmoji
+      </el-button>
+      <el-button type="primary" @click="$router.push({name:'QuillEditor'})">QuillEditor</el-button>
+      <el-button type="primary" @click="$router.push({name:'WangEditor'})">WangEditor</el-button>
+      <el-button type="primary" @click="$router.push({name:'Sortablejs'})">Sortablejs</el-button>
+    </p>
+
+    <p>
+      <el-button type="primary" @click="$router.push({name:'VueComponentPass'})">Vue组件传参</el-button>
+    </p>
 
     <p>
       <a href="/static/weChatVideoAutoplay.html">微信H5视频自动播放</a>
+    </p>
+    <p>
+      <el-button type="primary" @click="$router.push({name:'VueLazyload'})">Vue图片资源滚动懒加载</el-button>
     </p>
   </div>
 </template>
@@ -116,7 +125,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
   h1, h2 {
     font-weight: normal;
   }

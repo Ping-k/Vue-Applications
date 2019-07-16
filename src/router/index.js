@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import ECharts from '@/views/ECharts'
-import BaiduUEditor from '@/views/Editor/BaiduUEditor'
-import BaiduUEditorWeChatEmoji from '@/views/Editor/BaiduUEditorWeChatEmoji'
-import QuillEditor from '@/views/Editor/QuillEditor'
-import WangEditor from '@/views/Editor/WangEditor'
-import Sortablejs from '@/views/Sortablejs'
+
+const HelloWorld = () => import('@/components/HelloWorld')
+const ECharts = () => import('@/views/ECharts')
+const BaiduUEditor = () => import('@/views/Editor/BaiduUEditor')
+const BaiduUEditorWeChatEmoji = () => import('@/views/Editor/BaiduUEditorWeChatEmoji')
+const QuillEditor = () => import('@/views/Editor/QuillEditor')
+const WangEditor = () => import('@/views/Editor/WangEditor')
+const Sortablejs = () => import('@/views/Sortablejs')
+const VueComponentPass = () => import('@/views/VueComponentPass')
+const VueLazyload = () => import('@/views/VueLazyload')
 
 Vue.use(Router)
 
@@ -40,6 +43,14 @@ export default new Router({
       path: '/Sortablejs',
       name: 'Sortablejs',
       component: Sortablejs
+    }, {
+      path: '/VueComponentPass',
+      name: 'VueComponentPass',
+      component: VueComponentPass
+    }, {
+      path: '/VueLazyload',
+      name: 'VueLazyload',
+      component: VueLazyload
     }
   ]
 })
