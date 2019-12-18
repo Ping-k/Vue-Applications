@@ -10,6 +10,8 @@ const WangEditor = () => import('@/views/Editor/WangEditor')
 const Sortablejs = () => import('@/views/Sortablejs')
 const VueComponentPass = () => import('@/views/VueComponentPass')
 const VueLazyload = () => import('@/views/VueLazyload')
+const TreePageLoad = () => import('@/views/TreePageLoad')
+const GridSystem = () => import('@/views/GridSystem')
 
 Vue.use(Router)
 
@@ -52,6 +54,14 @@ export default new Router({
       path: '/VueLazyload',
       name: 'VueLazyload',
       component: VueLazyload
+    }, {
+      path: '/TreePageLoad',
+      name: 'TreePageLoad',
+      component: TreePageLoad
+    }, {
+      path: '/GridSystem',
+      name: 'GridSystem',
+      component: GridSystem
     }
   ]
 })

@@ -96,14 +96,55 @@
 
     <p>
       <el-button type="primary" @click="$router.push({name:'VueComponentPass'})">Vue组件传参</el-button>
+      <el-button type="primary" @click="$router.push({name:'VueLazyload'})">Vue图片资源滚动懒加载</el-button>
+      <el-button type="primary" @click="$router.push({name:'TreePageLoad'})">Tree分页加载</el-button>
+      <el-button type="primary" @click="$router.push({name:'GridSystem'})">SCSS手写栅格系统</el-button>
     </p>
+
+    <el-button type="primary" @click="getData">获取数据</el-button>
+
+    <el-table
+      ref="multipleTable"
+      :data="tableData"
+      tooltip-effect="dark"
+      style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        label="日期"
+        width="120">
+        <template slot-scope="scope">{{ scope.row.date }}</template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="地址"
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="200">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isCalling">打电话</span>
+          <el-button @click="scope.row.isCalling=true" type="text" size="small">通话</el-button>
+          <el-button @click="scope.row.isCalling=false" type="text" size="small">挂断</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
 
     <p>
       <a href="/static/weChatVideoAutoplay.html">微信H5视频自动播放</a>
     </p>
-    <p>
-      <el-button type="primary" @click="$router.push({name:'VueLazyload'})">Vue图片资源滚动懒加载</el-button>
-    </p>
+
   </div>
 </template>
 
@@ -112,7 +153,61 @@
     name: 'HelloWorld',
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App'
+        msg: 'Welcome to Your Vue.js App',
+        tableData: [{
+          date: '2016-05-03',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-08',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-06',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-07',
+          name: '王小虎',
+          isCalling:false,
+          address: '上海市普陀区金沙江路 1518 弄'
+        }],
+        multipleSelection: []
+      }
+    },
+    methods:{
+      getData(){
+        console.log(this.multipleSelection, this.tableData)
+      },
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
       }
     },
     mounted() {
