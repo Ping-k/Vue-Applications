@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <style type="text/css">
+    html {
+      height: 100%
+    }
+
+    body {
+      height: 100%;
+      margin: 0px;
+      padding: 0px
+    }
+
+    #allmap {
+      width: 100%;
+      height: 100%;
+    }
+
+    #winContent {
+      width: 950px
+    }
+
+    .second, .third, .forth, .fifth {
+      display: none;
+    }
+
+    #cont {
+      width: 100%;
+      height: 100%;
+    }
+
+    #sub {
+      width: 100px;
+      margin-top: 25px
+    }
+  </style>
+  <!--<script type="text/javascript" src="/gradesign/js/jquery-3.3.1.min.js"></script>-->
+  <!--<script type="text/javascript" src="/gradesign/js/bootstrap.min.js"></script>-->
+  <!--<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=XXX"></script>-->
+  <!--<script type="text/javascript" src="/gradesign/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>-->
+  <!--<script type="text/javascript" src="/gradesign/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>-->
+
+
+  <script type="text/javascript"
+          src="http://api.map.baidu.com/getscript?v=2.0&ak=S5R7uI5TAunarUxvOduczhg32GnSlYTn&services=&t=20180823194355"></script>
+  <!--<script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>-->
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+  <title>BaiduMap</title>
+</head>
+<body>
+<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+<div id="cont">
+  <div id="allmap"></div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+  $(function () {
+  });
+  // 百度地图API功能
+  var map = new BMap.Map("allmap");    // 创建Map实例
+  var gc = new BMap.Geocoder();
+  // 初始化地图,设置中心点坐标和地图级别
+  map.centerAndZoom(new BMap.Point(118.723572, 32.211126), 15);
+  //鼠标放大缩小地图
+  map.enableScrollWheelZoom(true)
+  //地图样式
+  var mapStyle = {style: "mapbox"};
+  map.setMapStyle(mapStyle);
+  //map.setCurrentCity("南京"); // 仅当设置城市信息时，MapTypeControl的切换功能才能可用
+  //浏览器定位
+  var geolocation = new BMap.Geolocation();
+  geolocation.getCurrentPosition(function (r) {
+    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+      var pt = r.point;
+      x = r.point.lng;
+      y = r.point.lat;
+      gc.getLocation(pt, function (rs) {
+        var addComp = rs.addressComponents;//获取省市区号
+        map.centerAndZoom(addComp.city, 13);
+        map.setCurrentCity(addComp.city);
+      });
+
+    }
+    else {
+      alert(this.getStatus());
+      alert("系统错误，请联系管理员");
+    }
+  }, {enableHightAccuracy: true});
+
+  //定义一个控件类
+  function ZoomControl() {
+    this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;		//anchor表示控件停靠在地图的哪个角
+    this.defaultOffset = new BMap.Size(100, 20);		//提供偏移量，用来指示控件距离地图边界相隔多少像素。
+  }
+
+  //通过JS的prototype属性继承BMap.Control
+  ZoomControl.prototype = new BMap.Control();
+  //自定义控件必须实现自己的init方法，并将控件的DOM元素返回
+  //该方法中创建div元素作为控件容器，并添加到地图容器中
+  ZoomControl.prototype.initialize = function (map) {
+    //创建一个DOM元素
+    var div = document.createElement("div");
+    div.innerHTML = '<div class="col-sm-3"><div class="input-group"><input type="text" id="address" class="form-control" placeholder="搜索地点" /><a class="clear"></a>' +
+      '<span class="input-group-btn"><button class="btn btn-default" type="button" οnclick=" choose()">GO!</button></span></div></div>';
+    map.getContainer().appendChild(div);
+    return div;
+  }
+  //创建控件
+  var myZoom = new ZoomControl();
+  //添加到地图中
+  map.addControl(myZoom);
+  map.addControl(new BMap.NavigationControl());
+  map.addControl(new BMap.OverviewMapControl());
+  //百度地图自动完成搜索
+  var ac = new BMap.Autocomplete({
+    "input": "address",
+    "location": map
+  });
+
+
+  var myValue;
+
+  //点击下拉列表中的事件
+  function choose() {
+    myValue = $("#address").val();
+
+    function myFun() {
+      var pp = local.getResults().getPoi(0).point;
+      map.centerAndZoom(pp, 18);
+      //map.addOverlay(new BMap.Marker(pp));		//添加标注
+    };
+    var local = new BMap.LocalSearch(map, {
+      onSearchComplete: myFun
+    });
+    local.search(myValue);
+  }
+
+  ac.addEventListener("onconfirm", function (e) {
+    var _value = e.item.value;
+    myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+    G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+    setPlace();
+  });
+  var lnt = "";
+  var lat = "";
+  var address = "";
+  //点击地图添加可拖拽点
+  map.addEventListener("onclick", function (e) {
+    var content =
+      '<div id="winContent">' +
+      '<form id="payModalForm"><div class="row"><div class="form-group col-md-3" style="display:none">' +
+      '<label for="id">ID</label><input type="text" class="form-control" id="id" placeholder="id"/>' +
+      '</div><div class="form-group col-md-3"><label for="payItem">支出项目</label>' +
+      '<input type="text" class="form-control" id="payItem" placeholder="支出项目"/>' +
+      '</div><div class="form-group col-md-3"><label for="datetimepicker">支出时间</label>' +
+      '<div class="input-group date form_date" id="datetimepicker" data-date-format="yyyy-mm-dd"  data-link-format="yyyy-mm-dd" οnclick="pickerShow()">' +
+      '<input type="text" class="form-control" id="payDate" placeholder="支出时间" />' +
+      '<span class="input-group-addon" οnclick="pickClean()"><span class="glyphicon glyphicon-remove" ></span></span>' +
+      '</div></div><div class="form-group col-md-3"><label for="payMoney">支出金额</label>' +
+      '<input type="text" id="payMoney" class="form-control" placeholder="支出金额"/></div></div>' +
+      '<div class="row"><div class="form-group col-md-3" ><label for="payMember">支出人</label><select class="form-control" id="payMember" >' +
+      '<option th:each="memberName : ${nameList}" th:text="${memberName.membername}"></option><option>所有成员</option>' +
+      '</select></div><div class="form-group col-md-3"><form role="form">' +
+      '<label for="payType">支出类型</label><select class="form-control" id="payType" οnchange="typeChange()">' +
+      '<option>日常支出</option><option>投资支出</option><option>意外支出</option><option>消费支出</option>' +
+      '<option>其他支出</option></select></form></div>' +
+      '<div id="first" class="form-group payDiv first col-md-3"><form role="form">' +
+      '<label class="payTypeLabel">日常支出</label><select class="payTypeDetail form-control select-first" id="payCommonDetail">' +
+      '<option>---请选择日常支出---</option><option>饮食</option><option>服装</option><option>水电</option>' +
+      '<option>交通</option><option>通讯</option><option>赡养</option><option>其他</option></select></form></div>' +
+      '<div id="second" class="form-group payDiv second col-md-3"><form role="form"><label class="payTypeLabel">投资支出</label>' +
+      '<select class="payTypeDetail form-control select-second" id="payInvestDetail"><option>---请选择投资支出---</option>' +
+      '<option>股票</option><option>外汇</option><option>基金</option><option>彩票</option><option>债券</option><option>保险</option>' +
+      '<option>其他</option></select></form></div><div id="third" class="form-group payDiv third col-md-3"><form role="form">' +
+      '<label class="payTypeLabel">意外支出</label><select class="payTypeDetail form-control select-second" id="payAccidentDetail">' +
+      '<option>---请选择意外支出---</option><option>罚单</option><option>医疗保健</option><option>其他</option></select></form></div>' +
+      '<div id="forth" class="form-group payDiv forth col-md-3"><form role="form"><label class="payTypeLabel">消费支出</label>' +
+      '<select class="payTypeDetail form-control select-second" id="payConsumeDetail"><option>---请选择消费支出---</option><option>购物</option>' +
+      '<option>旅游</option><option>居住</option><option>交通通信</option><option>文娱教育</option><option>其他</option></select></form>' +
+      '</div><div id="fifth" class="form-group payDiv fifth col-md-3"><form role="form"><label class="payTypeLabel">其他支出</label>' +
+      '<input class="payTypeDetail form-control select-third" type="text" id="payOtherDetail" placeholder="请输入支出详情"/></form></div></div>' +
+      '<div class="row"><div class="form-group col-md-3"><label for="payTip">支出备注</label><input type="text" id="payTip" class="form-control" placeholder="备注"/>' +
+      '</div><div class="form-group col-md-3"><label for="address">地址</label><input type="text" id="address" class="form-control" placeholder="地址"/></div>' +
+      '<div class="form-group col-md-3"><button type="button" id="sub" class="btn btn-primary" οnclick="submit()">提交</button></div></div></form></div>';
+    var scontent = "";
+    x = e.point.lng;
+    y = e.point.lat;
+    lng = x;
+    lat = y;
+    point = new BMap.Point(x, y);
+    marker = new BMap.Marker(point);	// 创建标注
+    map.centerAndZoom(point, 18);
+    map.clearOverlays();	//清除地图上所有覆盖物
+    map.addOverlay(marker);	//将标注添加到地图中
+    marker.enableDragging();	//不可拖拽marker.disableDragging();
+    //给标注点添加窗口
+    var infoWindow = new BMap.InfoWindow(content);	//创建信息窗口对象
+    marker.openInfoWindow(infoWindow);
+    var geoc = new BMap.Geocoder();
+    geoc.getLocation(point, function (rs) {
+      // var allPois = rs.surroundingPois;
+      // address = allPois[0].title;
+      // $("#address").val(address);
+      $("#address").val(rs.address);
+    })
+    map.centerAndZoom(point, 18);
+
+  });
+  // x = e.point.lng;
+  // y = e.point.lat;
+  // lng = x;
+  // lat = y;
+  // point = new BMap.Point(x, y);
+  // map.centerAndZoom(point, 18);
+
+  function G(id) {
+    return document.getElementById(id);
+  };
+
+  function setPlace() {
+    function myFun() {
+      var pp = local.getResults().getPoi(0).point;
+      map.centerAndZoom(pp, 18);
+    };
+    var local = new BMap.LocalSearch(map, {
+      onSearchComplete: myFun
+    });
+    local.search(myValue);
+  }
+
+  function pickerShow() {
+    $('#payDate').datetimepicker({
+      language: 'zh-CN',
+      weekStart: 1,
+      todayBtn: 1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      minView: 2,
+      forceParse: 0,
+      todayHighlight: true
+    });
+  }
+
+  function pickClean() {
+    $('#payDate').val("");
+  };
+</script>
+</html>

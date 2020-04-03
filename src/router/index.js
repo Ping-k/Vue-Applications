@@ -12,6 +12,11 @@ const VueComponentPass = () => import('@/views/VueComponentPass')
 const VueLazyload = () => import('@/views/VueLazyload')
 const TreePageLoad = () => import('@/views/TreePageLoad')
 const GridSystem = () => import('@/views/GridSystem')
+const FloatSelfBtn = () => import('@/views/FloatSelfBtn')
+const BaiduMap = () => import('@/views/BaiduMap/BaiduMap')
+const BaiduMapMobile = () => import('@/views/BaiduMap/BaiduMapMobile')
+const CustomIcon = () => import('@/views/CustomIcon')
+const ControlsCSS = () => import('@/views/ControlsCSS')
 
 Vue.use(Router)
 
@@ -62,6 +67,34 @@ export default new Router({
       path: '/GridSystem',
       name: 'GridSystem',
       component: GridSystem
+    }, {
+      path: '/FloatSelfBtn',
+      name: 'FloatSelfBtn',
+      component: FloatSelfBtn
+    }, {
+      path: '/BaiduMap',
+      name: 'BaiduMap',
+      component: BaiduMap
+    }, {
+      path: '/BaiduMapMobile',
+      name: 'BaiduMapMobile',
+      component: BaiduMapMobile
+    }, {
+      path: '/CustomIcon',
+      name: 'CustomIcon',
+      component: CustomIcon
+    }, {
+      path: '/ControlsCSS',
+      name: 'ControlsCSS',
+      component: ControlsCSS
+    }, {
+      path: '/IP',
+      name: 'IP',
+      component: () => import('@/views/IP')
+    }, {
+      path: '/Print',
+      name: 'Print',
+      component: () => import('@/views/Print')
     }
   ]
 })

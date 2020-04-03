@@ -8,6 +8,33 @@
   <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
 
   <title>Vue-Applications</title>
+
+
+  <script>
+    if(navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.register('static/service-worker.js').then(function (registration) {
+        console.log(registration)
+      }).catch(function (err) {
+        console.log(err)
+      })
+    }
+  </script>
+
+  <script>
+    // 检查service workers 是否注册
+    // if ('serviceWorker' in navigator) {
+    //   // 使用窗口加载事件保持页面加载性能
+    //   window.addEventListener('load', () => {
+    //     navigator.serviceWorker.register('static/sw.js');
+    //   });
+    // }
+  </script>
+
+  <!-- 阿里自定义图标库 -->
+  <!--<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1582399_y8t5ar2ppig.css">-->
+
+  <!-- 百度地图 -->
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=S5R7uI5TAunarUxvOduczhg32GnSlYTn"></script>
 </head>
 <body>
 <div id="app"></div>

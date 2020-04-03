@@ -1,0 +1,300 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>全插件</title>
+  <script type="text/javascript"
+          src="http://api.map.baidu.com/getscript?v=2.0&ak=S5R7uI5TAunarUxvOduczhg32GnSlYTn&services=&t=20180823194355"></script>
+  <script type="text/javascript"
+          src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+
+<style>
+
+  #app {
+    overflow: hidden;
+    position: absolute;
+    top: 117px;
+    left: 0rem;
+    z-index: 99999;
+    width: 100%;
+    /*width: 7.5rem;*/
+    /*display: none*/
+  }
+
+  #daohang {
+    display: block;
+    padding: 3px 5px;
+    border-radius: 3px;
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0.1rem;
+    z-index: 999;
+    background: #fff;
+    border: 1px solid #336699;
+    font-size: 16px
+  }
+
+  #l-map {
+    width: 100%;
+    min-height: 300px;
+  }
+
+  #r-result, #r-result table {
+    width: 100%;
+  }
+
+  .nav {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: #EDEDED;
+    border: 1px solid #ADADAD;
+  }
+
+  .nav .nav-inner {
+    width: 60%;
+    margin: 0px auto;
+    /*width: 30%;*/
+    /*margin-left: 35%;*/
+  }
+
+  .nav .nav-sub {
+    float: left;
+    width: 33%;
+  }
+
+  .nav .nav-sub a {
+    text-decoration: none;
+  }
+
+  .nav .nav-sub a i {
+    display: inline-block;
+    background: url("http://webmap1.map.bdstatic.com/wolfman/static/common/images/ui3/mo_banner_ba37b5d.png")
+  }
+
+  .nav .nav-sub a.bus i {
+    background-position: -1px -192px;
+    position: relative;
+    top: 2px;
+    width: 13px;
+    height: 16px;
+  }
+
+  .nav .nav-sub a.driver i {
+    background-position: -29px -194px;
+    width: 15px;
+    height: 14px;
+  }
+
+  .nav .nav-sub a.walk i {
+    background-position: -102px -189px;
+    width: 16px;
+    height: 18px;
+  }
+
+  .nav .nav-sub a.bus.cur i {
+    background-position: -15px -192px;
+  }
+
+  .nav .nav-sub a.driver.cur i {
+    background-position: -45px -194px;
+  }
+
+  .nav .nav-sub a.walk.cur i {
+    background-position: -120px -189px;
+  }
+
+  .hide {
+    /*display: none;*/
+  }
+
+  input {
+    font-family: "micrsoft yahei";
+    width: 80%;
+    height: 2em;
+    font-size: 1em;
+    line-height: 2em;
+    border: 0px;
+    outline: 0px;
+    padding: .2em 1em;
+    margin: 0em 10%;
+  }
+
+  .btn-group {
+    width: 100%;
+    border-top: 1px solid #DDD;
+    border-bottom: 2px solid #DDD;
+  }
+
+  button {
+    width: 32%;
+    text-align: center;
+    border: 0;
+    border-radius: 0;
+    background-color: inherit;
+    height: 44px;
+    line-height: 44px;
+    font-size: 15px;
+  }
+
+</style>
+
+<div id="search">
+  <input type="text" id="start" placeholder="正在定位您的位置..." style="border-bottom: 1px solid #DDD; "/>
+  <input type="text" id="end" value="深圳北站" readonly="true"/>
+  <input type="hidden" id="start_point" value=""/>
+  <input type="hidden" id="end_point" value="114.0358981902,22.6155075532"/>
+  <input type="hidden" id="start_location" value=""/>
+  <div class="btn-group">
+    <button id="bus-search">公交</button>
+    <button id="driver-search">驾车</button>
+    <button id="walk-search">步行</button>
+  </div>
+</div>
+<div id="app">
+  <div id="showMap" class="hide">
+    <div class="nav">
+      <div class="nav-inner">
+        <div class="nav-sub"><a href="#" class="bus"><i></i></a> 公交</div>
+        <div class="nav-sub"><a href="#" class="driver cur"><i></i></a> 驾车</div>
+        <div class="nav-sub"><a href="#" class="walk"><i></i></a> 步行</div>
+      </div>
+      <a href="javascript:;" id="reLocation">重新导航</a>
+    </div>
+    <div id="l-map"></div>
+    <div id="r-result"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function app() {
+    var ep = $("#end_point").val().split(",");
+    var map = new BMap.Map("l-map");
+    var point = new BMap.Point(ep[0], ep[1]);
+    map.centerAndZoom(point, 18);
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+    // 定位对象
+    var geoc = new BMap.Geocoder();
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        $("#start_point").val(r.point.lng + ',' + r.point.lat);
+        setLocation(r.point);
+        showMap();
+
+      } else {
+        $("#start").attr("placeholder", "请输入您的当前位置")
+        alert('无法定位到您的当前位置，导航失败，请手动输入您的当前位置！' + this.getStatus());
+      }
+    }, {enableHighAccuracy: true});
+
+    $(".nav .nav-sub a").click(function () {
+      $(".nav .nav-sub a").removeClass('cur');
+      $(this).addClass('cur');
+      searchRoute();
+    })
+
+    $("#reLocation").click(function () {
+      reLocation();
+    });
+
+    $("#bus-search,#driver-search,#walk-search").click(function () {
+      var id = $(this).attr("id");
+      $(".nav .nav-sub a").removeClass('cur');
+      if (id == "bus-search") {
+        $(".nav .nav-sub a.bus").addClass('cur');
+      } else if (id == "driver-search") {
+        $(".nav .nav-sub a.driver").addClass('cur');
+      } else if (id == "walk-search") {
+        $(".nav .nav-sub a.walk").addClass('cur');
+      }
+      showMap();
+    })
+
+    function reLocation() {
+      $("#search").show();
+      $("#showMap").hide();
+      map = new BMap.Map("l-map");
+      map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+    }
+
+    function showMap() {
+      $("#srarch").hide();
+      $("#showMap").show();
+      searchRoute();
+    }
+
+    function setLocation(point) {
+      geoc.getLocation(point, function (rs) {
+        var addComp = rs.addressComponents;
+        var result = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+        $("#start").val(result);
+        $("#start_location").val(result);
+        var a = $('.suggest-plan-des').siblings('a');
+        console.log(a)
+        a.href = 'http://api.map.baidu.com/direction?region=中国&origin_region=' + result + '&destination_region=深圳北站&origin=114.0358981902,22.6155075532&destination=114.0358981902,22.6155075532&output=html&mode=driving&src=baidu_map_jsapi'
+        searchRoute();
+      });
+    }
+
+    // console.log(a)
+
+    function searchRoute(s_, e_) {
+      map = new BMap.Map("l-map");
+      map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+      var cur = $(".nav .nav-sub a.cur");
+      var type = "";
+
+      if (cur.hasClass('bus')) {
+        type = "bus";
+      } else if (cur.hasClass('driver')) {
+        type = "driver";
+      } else if (cur.hasClass('walk')) {
+        type = "walk";
+      } else {
+        type = "driver";
+      }
+
+      var s_;
+      var e_;
+
+      var sl = $("#start_location").val();
+      var s = $("#start").val();
+      var sp = $("#start_point").val();
+      var e = $("#end").val();
+      var ep = $("#end_point").val();
+
+      if (s != sl) {// 如果用户修改了地址（与定位的位置不一致）则使用地址搜索
+        s_ = s;
+        e_ = e;
+      } else if (sp) {// 否则使用坐标搜索
+        var ps = sp.split(",");
+        var pe = ep.split(",");
+        s_ = new BMap.Point(ps[0], ps[1]);
+        e_ = new BMap.Point(pe[0], pe[1]);
+      }
+
+      if (type == "bus") {
+        var transit = new BMap.TransitRoute(map, {renderOptions: {map: map, panel: "r-result", autoViewport: true}});
+        console.log(transit)
+        transit.search(s_, e_);
+      } else if (type == "driver") {
+        var driving = new BMap.DrivingRoute(map, {renderOptions: {map: map, panel: "r-result", autoViewport: true}});
+        console.log(driving)
+        driving.search(s_, e_);
+      } else if (type == "walk") {
+        var walking = new BMap.WalkingRoute(map, {renderOptions: {map: map, panel: "r-result", autoViewport: true}});
+        console.log(walking)
+        walking.search(s_, e_);
+      }
+    }
+  }
+
+  app()
+</script>
+</body>
+</html>

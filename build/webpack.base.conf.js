@@ -8,12 +8,13 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-
-
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
+  },
+  externals: {
+    "BMap": "BMap"
   },
   output: {
     path: config.build.assetsRoot,
@@ -38,7 +39,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        // loader: 'babel-loader',
+        loader: 'babel-loader?cacheDirectory=true', // 对 .js 文件，开启 babel-loader 自带的缓存
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {

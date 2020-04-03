@@ -13,6 +13,7 @@ module.exports = {
   }),
   cssSourceMap: sourceMapEnabled,
   cacheBusting: config.dev.cacheBusting,
+  cacheIdentifier: 'cache-loader:{version} {process.env.NODE_ENV}', // 对 vue 文件，使用 cache-loader 进行缓存
   transformToRequire: {
     video: ['src', 'poster'],
     source: 'src',

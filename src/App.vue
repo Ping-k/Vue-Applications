@@ -7,7 +7,13 @@
 
 <script>
   export default {
-    name: 'App'
+    name: 'App',
+    mounted() {
+      // 监听返回
+      window.addEventListener("pageshow", (event) => {
+        console.log("页面是否从浏览器缓存中加载?-app " + event.persisted);
+      });
+    }
   }
 </script>
 

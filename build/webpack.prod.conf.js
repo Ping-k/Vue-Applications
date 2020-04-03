@@ -49,7 +49,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
       allChunks: true,
     }),
@@ -61,26 +61,26 @@ const webpackConfig = merge(baseWebpackConfig, {
         : { safe: true }
     }),
 
-    new PrerenderSPAPlugin({
-      // 生成文件的路径，也可以与webpakc打包的一致。
-      // 下面这句话非常重要！！！
-      // 这个目录只能有一级，如果目录层次大于一级，在生成的时候不会有任何错误提示，在预渲染的时候只会卡着不动。
-      staticDir: path.join(__dirname, '../dist'),
-
-      // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
-      routes: [ '/', '/ECharts', '/BaiduUEditor', '/BaiduUEditorWeChatEmoji',
-        '/QuillEditor', '/WangEditor', '/Sortablejs', '/VueComponentPass', '/VueLazyload' ],
-
-      // 这个很重要，如果没有配置这段，也不会进行预编译
-      renderer: new Renderer({
-        inject: {
-          foo: 'bar'
-        },
-        headless: false,
-        // 在 main.js 中 document.dispatchEvent(new Event('render-event'))，两者的事件名称要对应上。
-        renderAfterDocumentEvent: 'render-event'
-      })
-    }),
+    // new PrerenderSPAPlugin({
+    //   // 生成文件的路径，也可以与webpakc打包的一致。
+    //   // 下面这句话非常重要！！！
+    //   // 这个目录只能有一级，如果目录层次大于一级，在生成的时候不会有任何错误提示，在预渲染的时候只会卡着不动。
+    //   staticDir: path.join(__dirname, '../dist'),
+    //
+    //   // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
+    //   routes: [ '/', '/ECharts', '/BaiduUEditor', '/BaiduUEditorWeChatEmoji',
+    //     '/QuillEditor', '/WangEditor', '/Sortablejs', '/VueComponentPass', '/VueLazyload' ],
+    //
+    //   // 这个很重要，如果没有配置这段，也不会进行预编译
+    //   renderer: new Renderer({
+    //     inject: {
+    //       foo: 'bar'
+    //     },
+    //     headless: false,
+    //     // 在 main.js 中 document.dispatchEvent(new Event('render-event'))，两者的事件名称要对应上。
+    //     renderAfterDocumentEvent: 'render-event'
+    //   })
+    // }),
 
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html

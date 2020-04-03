@@ -1,0 +1,51 @@
+html,
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.sw-update {
+  background: #000000;
+  color: #ffffff;
+  cursor: pointer;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  text-align: right;
+  padding: 5px 40px;
+  display: block;
+}
+
+.sw-update:after {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  content: '';
+  width: 26px;
+  height: 26px;
+  background: url("./img/refresh.png");
+  background-size: 100% 100%;
+}
+
+.service-worker {
+  padding: 10px;
+  width: 850px;
+  margin: 10px auto;
+}
+
+.service-worker h2,
+.service-worker h3 {
+  margin: 10px 0px;
+}
+
+.service-worker p {
+  font-size: 14px;
+  color: #4d4d4d;
+  font-weight: 400;
+  line-height: 23px;
+  margin: 0 0 16px;
+}
+
+.service-worker img {
+  max-width: 400px;
+}

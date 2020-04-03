@@ -99,48 +99,24 @@
       <el-button type="primary" @click="$router.push({name:'VueLazyload'})">Vue图片资源滚动懒加载</el-button>
       <el-button type="primary" @click="$router.push({name:'TreePageLoad'})">Tree分页加载</el-button>
       <el-button type="primary" @click="$router.push({name:'GridSystem'})">SCSS手写栅格系统</el-button>
+      <el-button type="primary" @click="$router.push({name:'FloatSelfBtn'})">浮动拖拽自吸按钮</el-button>
     </p>
 
-    <el-button type="primary" @click="getData">获取数据</el-button>
+    <p>
+      <el-button type="primary" @click="$router.push({name:'CustomIcon'})">自定义图标</el-button>
+      <el-button type="primary" @click="$router.push({name:'BaiduMap'})">BaiduMap</el-button>
+      <el-button type="primary" @click="$router.push({name:'BaiduMapMobile'})">BaiduMap-Mobile</el-button>
+      <a href="/static/baiduMapTest/test4.html" target="_blank">百度线路导航</a>
+      <a href="/static/baiduMapTest/test5.html" target="_blank">百度移动线路导航</a>
+      <a href="/static/baiduMapTest/test6.html" target="_blank">百度移动线路规划</a>
+      <a href="/static/baiduMapTest/test7.html" target="_blank">百度搜索定位弹窗</a>
+    </p>
 
-    <el-table
-      ref="multipleTable"
-      :data="tableData"
-      tooltip-effect="dark"
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        label="日期"
-        width="120">
-        <template slot-scope="scope">{{ scope.row.date }}</template>
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址"
-        show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="200">
-        <template slot-scope="scope">
-          <span v-if="scope.row.isCalling">打电话</span>
-          <el-button @click="scope.row.isCalling=true" type="text" size="small">通话</el-button>
-          <el-button @click="scope.row.isCalling=false" type="text" size="small">挂断</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-
+    <p>
+      <el-button type="primary" @click="$router.push({name:'ControlsCSS'})">自定义Radio、Checked、Switch</el-button>
+      <el-button type="primary" @click="$router.push({name:'IP'})">IP查询</el-button>
+      <el-button type="primary" @click="$router.push({name:'Print'})">打印</el-button>
+    </p>
     <p>
       <a href="/static/weChatVideoAutoplay.html">微信H5视频自动播放</a>
     </p>
@@ -154,62 +130,9 @@
     data() {
       return {
         msg: 'Welcome to Your Vue.js App',
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          isCalling:false,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
-        multipleSelection: []
       }
     },
-    methods:{
-      getData(){
-        console.log(this.multipleSelection, this.tableData)
-      },
-      toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      }
-    },
+    methods: {},
     mounted() {
       this.$message({
         message: 'hello，欢迎来到Vue-Applications',

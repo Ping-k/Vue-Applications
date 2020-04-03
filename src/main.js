@@ -29,6 +29,19 @@ Vue.use(Element) // 全局使用ElementUI
 
 Vue.config.productionTip = false
 
+import Print from 'vue-print-nb'
+console.log(Print)
+Vue.use(Print);
+
+import '../static/service-worker'
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('./service-worker.js').then(function (registration) {
+//     console.log('Registration successful, scope is:', registration.scope);
+//   }).catch(function (error) {
+//     console.log('Service Worker registration failed, error:', error);
+//   });
+// }
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

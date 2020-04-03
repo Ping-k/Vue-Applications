@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>解决0.5px细边框问题</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+  <style>
+    html, body {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .border {
+      text-align: center;
+    }
+
+    .border1, .border2, .border3, .border4, .border5 {
+      display: inline-block;
+      width: 200px;
+      height: 100px;
+      text-align: center;
+      margin: 5px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .border1 {
+      border: 2px solid #000;
+    }
+
+    .border-px {
+      position: relative;
+    }
+
+    .border-px:after {
+      border: 2px solid #000;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      content: "";
+      box-sizing: border-box;
+    }
+
+    .border2:after {
+      width: 133.34%;
+      height: 133.34%;
+      -webkit-transform: scale(0.75);
+      -webkit-transform-origin: 0 0;
+      transform: scale(0.75);
+      transform-origin: 0 0;
+    }
+
+    .border3:after {
+      width: 200%;
+      height: 200%;
+      -webkit-transform: scale(0.5);
+      -webkit-transform-origin: 0 0;
+      transform: scale(0.5);
+      transform-origin: 0 0;
+    }
+
+    .border4:after {
+      width: 400%;
+      height: 400%;
+      -webkit-transform: scale(0.25);
+      -webkit-transform-origin: 0 0;
+      transform: scale(0.25);
+      transform-origin: 0 0;
+    }
+
+    .border5:after {
+      width: 1000%;
+      height: 1000%;
+      -webkit-transform: scale(0.1);
+      -webkit-transform-origin: 0 0;
+      transform: scale(0.1);
+      transform-origin: 0 0;
+    }
+
+    .font {
+      padding: 5px;
+      margin: 5px 0;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .font12 {
+      font-size: 12px;
+    }
+
+    .font10 {
+      font-size: 20px;
+      transform: scale(0.5); /**整体缩小50%，相应设置放大50%*/
+      transform-origin: 0 0;
+      width: 198.6%;
+    }
+
+    .font8 {
+      font-size: 16px;
+      transform: scale(0.5);
+      transform-origin: 0 0;
+      width: 198.6%;
+    }
+
+    .font6 {
+      font-size: 12px;
+      transform: scale(0.5);
+      transform-origin: 0 0;
+      width: 198.6%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="border">
+  <p>使用transform：scale()后，标签整体会相应的缩放，需要对样式进行调整，非缩写样式进行放大</p>
+  <div class="border1">
+    常规写法2px
+  </div>
+  <div class="border-px border2">
+    伪类细线写法75%，对比尺寸：133.34%;
+  </div>
+  <div class="border-px border3">
+    伪类细线写法50%，对比尺寸：200%;
+  </div>
+  <div class="border-px border4">
+    伪类细线写法25%，对比尺寸：400%;
+  </div>
+  <div class="border-px border5">
+    伪类细线写法10%，对比尺寸：1000%;
+  </div>
+  <hr>
+  <p class="font">浏览器默认字体：14px</p>
+  <p class="font font12">浏览器最小字体：12px</p>
+  <p class="font font10">transform字体：10px</p>
+  <p class="font font8">transform字体：8px</p>
+  <p class="font font6">transform字体：6px</p>
+</div>
+
+</body>
+</html>

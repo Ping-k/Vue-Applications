@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title></title>
+  <style> body, #mapContainer {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .center {
+    position: absolute;
+    width: 100%;
+    bottom: 24px;
+  } </style>
+  <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0?v=1.0"/>
+  //微信使用高德地图必须引入的js
+  <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+  <script src="http://webapi.amap.com/maps?v=1.3&key=06fb75f531ce19fd2af711465487d07a"></script>
+  <script> function init() {
+    var button = document.getElementById('bt');
+    map = new AMap.Map("mapContainer");
+    AMap.plugin(["AMap.Driving"], function () {
+      var drivingOption = {policy: AMap.DrivingPolicy.LEAST_TIME, map: map};
+      var driving = new AMap.Driving(drivingOption); //构造驾车导航类 其他导航方式设置相同
+      // 根据起终点坐标规划驾车路线
+      driving.search([{keyword: '北京西站', city: '010'}, {keyword: '清华大学', city: '010'}], function (status, result) {
+        driving.search(['起点坐标'], ['终点坐标'],
+          function (status, result) {
+            //city:公交换乘的城市，支持城市名称、城市区号、电话区号，此项为必填
+            button.onclick = function () {
+              driving.searchOnAMAP({
+                origin: result.origin, destination: result.destination
+              });
+            }
+          });
+      });
+    })
+  }</script>
+</head>
+<body onload="init()">
+<div id="mapContainer"></div>
+<div class='center'>
+  <div id='bt' class="btmtip">点击去高德地图</div>
+</div>
+</div> </body>
+</html>
